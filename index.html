@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DIP OR DIE - Biscuit Dipping Timer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="select-page">
+  <div class="container">
+    <h1>DIP OR DIE ☕🍪</h1>
+
+    <label for="biscuit-select">Choose your Biscuit:</label>
+    <select id="biscuit-select">
+      <option value="" disabled selected>Select one</option>
+      <option value="parle-g">Parle-G</option>
+      <option value="good-day">Good Day</option>
+      <option value="oreo">Oreo</option>
+      <option value="marie">Marie</option>
+    </select>
+
+    <p id="funny-message"></p>
+    <button id="start-button" style="display: none;">Start Dipping!</button>
+  </div>
+
+  <script>
+    const biscuitTimes = {
+      "parle-g": { time: 3.0, message: "You have 3.0 seconds. Be brave!" },
+      "good-day": { time: 4.5, message: "Good Day might betray you in 4.5 seconds!" },
+      "oreo": { time: 2.2, message: "Oreo will die in 2.2 seconds. Go fast!" },
+      "marie": { time: 3.8, message: "Marie is delicate - you've got 3.8 seconds, show some respect!" }
+    };
+
+    const biscuitSelect = document.getElementById('biscuit-select');
+    const funnyMsg = document.getElementById('funny-message');
+    const startBtn = document.getElementById('start-button');
+
+    biscuitSelect.addEventListener('change', () => {
+      const selected = biscuitSelect.value;
+      if (biscuitTimes[selected]) {
+        funnyMsg.textContent = biscuitTimes[selected].message;
+        startBtn.style.display = 'inline-block';
+      }
+    });
+
+    startBtn.addEventListener('click', () => {
+      const selected = biscuitSelect.value;
+      if (!selected) return;
+      localStorage.setItem('selectedBiscuit', selected);
+      window.location.href = 'timer.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Biscuit Dipping Timer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="timer-page">
+  <div class="container">
+    <h1>Timer Running ⏱</h1>
+    <div id="timer" class="clock">0.0</div>
+
+    <button id="stop-button">Stop Early 🛑</button>
+
+    <p id="end-message"></p>
+    <audio id="fail-sound" src="biscuit_crack.mp3"></audio>
+  </div>
+
+  <script>
+    const biscuitTimes = {
+      "parle-g": { time: 3.0 },
+      "good-day": { time: 4.5 },
+      "oreo": { time: 2.2 },
+      "marie": { time: 3.8 }
+    };
+
+    const selected = localStorage.getItem('selectedBiscuit');
+    const timerDisplay = document.getElementById('timer');
+    const endMsg = document.getElementById('end-message');
+    const failSound = document.getElementById('fail-sound');
+    const stopBtn = document.getElementById('stop-button');
+
+    let timeLeft = biscuitTimes[selected]?.time || 3.0;
+    let timerEnded = false;
+
+    timerDisplay.textContent = timeLeft.toFixed(1);
+
+    const countdownInterval = setInterval(() => {
+      timeLeft -= 0.1;
+      if (timeLeft <= 0 && !timerEnded) {
+        clearInterval(countdownInterval);
+        timerDisplay.textContent = "0.0";
+        endMsg.innerHTML = "💀 Oh no! Your biscuit is DEAD 😭<br>Try again if you dare!";
+        failSound.play();
+        timerEnded = true;
+      } else if (!timerEnded) {
+        timerDisplay.textContent = timeLeft.toFixed(1);
+      }
+    }, 100);
+
+    // Stop early button logic
+    stopBtn.addEventListener('click', () => {
+      if (!timerEnded) {
+        clearInterval(countdownInterval);
+        endMsg.innerHTML = "🎉 You did it! You saved the biscuit and won the battle! 🏆";
+        timerEnded = true;
+      }
+    });
+  </script>
+</body>
+</html>
